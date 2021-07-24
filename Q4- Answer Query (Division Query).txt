@@ -1,0 +1,24 @@
+;;
+USE SQLPlayground
+
+SELECT * 
+FROM   Customer AS CU
+WHERE  NOT EXISTS 
+      
+	   (
+	      SELECT * 
+          FROM   Product AS PR 
+          WHERE  NOT EXISTS 
+			   
+				   (
+				    SELECT * 
+                    FROM   Purchase AS PU 
+                    WHERE  PU.ProductId= PR.ProductId
+                    AND    CU.CustomerId= PU.CustomerId)) 
+ AND (
+      SELECT 
+	  Sum(PU.Qty) AS AllProductPurchace 
+      FROM   Purchase AS PU
+      WHERE  PU.CustomerId = CU.CustomerId) >= 50 
+
+;;

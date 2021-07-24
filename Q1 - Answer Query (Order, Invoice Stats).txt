@@ -1,0 +1,87 @@
+﻿;;
+USE WideWorldImporters
+
+SELECT 
+	*
+	INTO SALES.Q1_a  
+	FROM
+
+  (SELECT 
+	  Cu.CustomerID
+	 ,CU.CustomerName
+	 
+	   ,(
+			SELECT	
+			COUNT(DISTINCT Od.OrderID)
+			FROM	Sales.Orders as Od
+			       ,Sales.Invoices as Iv
+			WHERE	Od.CustomerID = Cu.CustomerID
+			    AND Od.OrderID = Iv.OrderID
+		) AS TotalNBOrders
+
+
+	   ,(
+			SELECT COUNT(DISTINCT IV.OrderID)
+			FROM	Sales.Orders           as OD
+					,Sales.Invoices        as IV
+			WHERE	OD.CustomerID = CU.CustomerID
+					AND OD.OrderID = IV.OrderID
+		) As TotalNBInvoices
+
+
+	   ,(
+	       SELECT sum(ODL.quantity * ODL.unitprice) 
+			FROM	Sales.Orders      as     OD
+					,Sales.OrderLines as     ODL
+					,Sales.Invoices   as     IV
+			WHERE	Od.OrderID = ODL.OrderID 
+			and     od.customerid = cu.customerid
+			and     Od.OrderID = Iv.OrderID
+			group by od.customerid
+			
+			)AS OrderTotalValue
+			
+
+	   ,(
+	       SELECT sum(INVL.quantity * INVL.unitprice) 
+			FROM	Sales.Orders        as  OD
+					,Sales.InvoiceLines as  INVL
+					,Sales.Invoices     as  IV
+			WHERE	IV.InvoiceID = INVL.InvoiceID 
+			and     OD.CustomerID = CU.CustomerID
+			and     OD.OrderID = IV.OrderID
+			group by OD.CustomerID
+			
+			)AS InvoiceTotalValue
+	
+FROM
+	Sales.Customers AS CU
+	)
+	 AS test
+
+
+SELECT
+ CustomerID
+,CustomerName	
+,TotalNBOrders	
+,TotalNBInvoices	
+,OrderTotalValue	
+,InvoiceTotalValue
+,Abs(ordertotalvalue - InvoiceTotalValue) AS AbsoluteValueDifference 
+--INTO SALES.Q1_FINAL
+FROM  SALES.Q1_a
+GROUP BY 
+ CustomerID
+,CustomerName	
+,TotalNBOrders	
+,TotalNBInvoices	
+,OrderTotalValue	
+,InvoiceTotalValue
+
+ORDER  BY AbsoluteValueDifference DESC 
+          ,TotalNBOrders           ASC 
+          ,CustomerName            ASC
+
+;;
+
+

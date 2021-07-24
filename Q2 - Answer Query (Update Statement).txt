@@ -1,0 +1,57 @@
+;;
+
+USE WideWorldImporters
+
+-- To check the correct "InvoiceLineID"
+-- Identifying the first (MINIMUM "InvoiceLine" of the first Invoice, for Customer (CustomerId = 1060, CustomerName = 'Anand Mudaliyar' )
+-- Result is "InvoiceLineID = 225394 "
+
+SELECT
+	  InvoiceLineID 
+	  FROM 
+	  Sales.Customers         AS CU
+	  ,Sales.Invoices         AS INV
+	  ,Sales.InvoiceLines     AS INVL
+	  where  
+	      INV.InvoiceID = INVL.InvoiceID
+	  AND CU.CustomerID=INV.CustomerID
+	  AND CU.CustomerID= 1060
+	  ORDER  BY INVL.InvoiceLineID ASC
+
+-- Cheking the UnitPrice BEFORE updating --> 240.00
+SELECT          
+InvoiceLineID
+,UnitPrice
+  FROM Sales.InvoiceLines
+  where InvoiceLineID=225394
+
+  
+-- Updating  "UnitPrice" of this first InvoiceLineID "InvoiceLine" by 20
+
+UPDATE Sales.InvoiceLines
+SET    UnitPrice = UnitPrice+20
+WHERE  InvoiceLineID=
+	(
+	  SELECT
+	   MIN(InvoiceLineID)  AS First_InvoiceLineID
+	  FROM 
+	   Sales.Customers     AS CU
+	  ,Sales.Invoices      AS INV
+	  ,Sales.InvoiceLines  AS INVL
+	  WHERE  
+	  INV.InvoiceID    = INVL.InvoiceID
+	  AND CU.CustomerID= INV.CustomerID
+	  AND CU.CustomerID= 1060
+	  )
+	  
+
+-- Cheking the UnitPrice AFTER updating --> 260.00 
+-- Rerunning Q1 query will show difference by 40 in AbsoluteValueDifference column
+
+/*SELECT          
+InvoiceLineID
+,UnitPrice
+  FROM Sales.InvoiceLines
+  where InvoiceLineID=225394*/
+
+  ;;

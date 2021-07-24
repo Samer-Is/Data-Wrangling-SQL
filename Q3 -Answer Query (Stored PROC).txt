@@ -1,0 +1,289 @@
+;;
+Create Procedure ReportCustomerTurnover 
+(@Choice INT= 1,   
+ @Year   INT= 2013)  -- Declaring variables with default Value (In case of missing Choice and Year Values
+ 
+ AS
+--DECLARE @Choice int;
+--DECLARE @Year int ;
+
+--SET @Choice= ''   ;
+--SET @Year  = '' ;
+
+ BEGIN --MAIN BEGIN
+  
+	IF (@Choice= 1) -- Choice 1 -->>  selects all the customer names and their total monthly invoiced value (Choice=1 Year=2014 in the resultset)
+	
+	BEGIN -- Begin1
+	SELECT
+		CU.CustomerName, 
+		( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 1 
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'JAN'
+
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+				FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 2 
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'FEB'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 3 
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'MAR'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 4 
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'APR'
+
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 5
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'MAY'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 6
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'JUN'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 7
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'JUL'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 8
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'AUG'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 9
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'SEP'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 10
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'OCT'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 11
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'NOV'
+
+		,( 
+		SELECT 
+				COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+		FROM   Sales.InvoiceLines AS INVL, 
+				Sales.Invoices     AS INV 
+		WHERE  INVL.InvoiceID = INV.InvoiceID
+		AND    CU.CustomerID = INV.customerid 
+		AND    Month(INV.InvoiceDate) = 12
+		AND    Year (INV.InvoiceDate) = @Year 
+		
+		) AS 'DEC'
+
+	FROM Sales.Customers AS CU
+	ORDER BY CU.CustomerName ASC
+ 
+	END -- for BEGIN1
+   
+
+	IF (@Choice= 2) -- Choice 2 -->>  customer names and their total quarterly invoiced value  (Choice=2 Year=2015 in the resultset)
+
+	BEGIN --BEGIN2
+	SELECT
+	  CU.CustomerName, 
+      ( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = @Year 
+		AND    DATEPART(Q,INV.InvoiceDate) =1
+		) AS 'Q1'
+
+		, ( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = @Year 
+		AND    DATEPART(Q,INV.InvoiceDate) =2
+		) AS 'Q2'
+
+		 ,( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = @Year 
+		AND    DATEPART(Q,INV.InvoiceDate) =3
+		) AS 'Q3'
+
+		 ,( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = @Year 
+		AND    DATEPART(Q,INV.InvoiceDate) =4
+		) AS 'Q4'
+
+		FROM Sales.Customers AS CU
+		ORDER BY CU.CustomerName ASC
+	END -- For BEGIN2
+
+	
+	IF (@Choice= 3)-- Choice 2 -->>  Choice = 3, the value of Year is ignored, selects all the customer names and their total yearly invoiced value (Choice=3 Year='' in the resultset)
+
+	BEGIN -- BEGIN3
+	
+	SELECT
+	  CU.CustomerName, 
+      ( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = 2013 
+		) AS '2013'
+
+      ,( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = 2014 
+		) AS '2014'
+
+      ,( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = 2015 
+		) AS '2015'
+
+      ,( 
+        SELECT 
+		       COALESCE(Sum(INVL.UnitPrice*INVL.Quantity), 0) 
+        FROM   Sales.InvoiceLines AS INVL, 
+               Sales.Invoices     AS INV 
+        WHERE  INVL.InvoiceID = INV.InvoiceID
+        AND    CU.CustomerID = INV.customerid 
+        AND    Year (INV.InvoiceDate) = 2016 
+		) AS '2016'
+	FROM Sales.Customers AS CU
+	ORDER BY CU.CustomerName ASC
+	END -- For BEGIN3
+
+END --For MAIN BEGIN
+
+
+-------------------------------------------------
+------------------- EXCUTING --------------------
+-------------------------------------------------
+
+EXEC dbo.ReportCustomerTurnover;
+EXEC dbo.ReportCustomerTurnover 1, 2014;
+EXEC dbo.ReportCustomerTurnover 2, 2015;
+EXEC dbo.ReportCustomerTurnover 3;
+
+
+
+;;
